@@ -1,0 +1,16 @@
+AddCar SportsCar Ferrari
+AddTrain CargoTrain 12312
+AddPlane PassengerPlane Boeing 474
+AddShip MilitaryShip Bismark
+RemoveCar Ferrari
+RemoveCar Ferrari
+CarsCount
+ShipsCount
+PlanesCount
+TrainsCount
+AddCar AllRoadCar Jeep
+AddCar SportsCar BMW
+CarsCount
+GetAllCars
+RemoveShip Bismark
+GetAllShips
