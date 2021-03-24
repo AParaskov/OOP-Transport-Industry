@@ -1,11 +1,15 @@
 package model.train;
 
-public abstract class BaseTrain {
-    private String id;
-    private int seats;
-    private int storageInLitres;
+import model.BaseVehicle;
+import model.VehicleType;
 
-    public BaseTrain(String id, int seats, int storageInLitres) {
+public abstract class BaseTrain extends BaseVehicle {
+    private String id;
+    private final int seats;
+    private final int storageInLitres;
+
+    public BaseTrain(String registrationNumber, String id, int seats, int storageInLitres) {
+        super(registrationNumber, VehicleType.RAIL);
         this.id = id;
         this.seats = seats;
         this.storageInLitres = storageInLitres;
@@ -17,21 +21,5 @@ public abstract class BaseTrain {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public int getSeats() {
-        return seats;
-    }
-
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-
-    public int getStorageInLitres() {
-        return storageInLitres;
-    }
-
-    public void setStorageInLitres(int storageInLitres) {
-        this.storageInLitres = storageInLitres;
     }
 }

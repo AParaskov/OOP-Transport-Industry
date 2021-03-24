@@ -1,7 +1,7 @@
 package model.ship;
 
 public class CruiseShip extends BaseShip{
-    public CruiseShip(String name) {
-        super(name, 5000, 100);
+    public CruiseShip(String registrationNumber, String name) {
+        super(registrationNumber, name, 5000, 100);
     }
 }

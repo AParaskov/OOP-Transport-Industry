@@ -1,11 +1,15 @@
 package model.ship;
 
-public abstract class BaseShip {
-    private String name;
-    private int storageInLitres;
-    private int crewMembers;
+import model.BaseVehicle;
+import model.VehicleType;
 
-    public BaseShip(String name, int storageInLitres, int crewMembers) {
+public abstract class BaseShip extends BaseVehicle {
+    private String name;
+    private final int storageInLitres;
+    private final int crewMembers;
+
+    public BaseShip(String registrationNumber, String name, int storageInLitres, int crewMembers) {
+        super(registrationNumber, VehicleType.WATER);
         this.name = name;
         this.storageInLitres = storageInLitres;
         this.crewMembers = crewMembers;
@@ -19,19 +23,4 @@ public abstract class BaseShip {
         this.name = name;
     }
 
-    public int getStorageInLitres() {
-        return storageInLitres;
-    }
-
-    public void setStorageInLitres(int storageInLitres) {
-        this.storageInLitres = storageInLitres;
-    }
-
-    public int getCrewMembers() {
-        return crewMembers;
-    }
-
-    public void setCrewMembers(int crewMembers) {
-        this.crewMembers = crewMembers;
-    }
 }

@@ -1,13 +1,18 @@
 package model.plane;
 
-public abstract class BasePlane {
-    private String name;
-    private int seats;
-    private int storageInLitres;
+import model.BaseVehicle;
+import model.VehicleType;
 
-    public BasePlane(String name, int seats, int storageInLitres) {
+public abstract class BasePlane extends BaseVehicle {
+    private String name;
+    private final int seats;
+    private final int storageInLitres;
+
+    public BasePlane(String registrationNumber, String name, int seats, int storageInLitres) {
+        super(registrationNumber, VehicleType.AIR);
         this.name = name;
         this.seats = seats;
+        this.storageInLitres = storageInLitres;
     }
 
     public String getName() {
@@ -18,19 +23,5 @@ public abstract class BasePlane {
         this.name = name;
     }
 
-    public int getSeats() {
-        return seats;
-    }
 
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-
-    public int getStorageInLitres() {
-        return storageInLitres;
-    }
-
-    public void setStorageInLitres(int storageInLitres) {
-        this.storageInLitres = storageInLitres;
-    }
 }

@@ -1,58 +1,72 @@
 package core;
 
 import core.interfaces.TrainController;
-import model.train.BaseTrain;
+import model.BaseVehicle;
+
+import model.VehicleType;
 import model.train.CargoTrain;
 import model.train.PassengerTrain;
-import repositories.TrainRepositoryImpl;
-import repositories.interfaces.TrainRepository;
+
+import repositories.impl.VehicleRepositoryImpl;
+import repositories.VehicleRepository;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class TrainControllerImpl implements TrainController {
-    private final TrainRepository trainRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public TrainControllerImpl() {
-        this.trainRepository = new TrainRepositoryImpl();
+    public TrainControllerImpl(VehicleRepositoryImpl vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
-    public String addTrain(String type, String id) {
-        BaseTrain train;
+    public String addTrain(String type, String registrationNumber, String id) {
+        BaseVehicle train;
         if (type.equals("PassengerTrain")) {
-            train = new PassengerTrain(id);
+            train = new PassengerTrain(registrationNumber, id);
         } else {
-            train = new CargoTrain(id);
+            train = new CargoTrain(registrationNumber, id);
         }
-        this.trainRepository.add(train);
+        this.vehicleRepository.add(train);
 
         return String.format("Successfully added train %s - %s", id, type);
     }
 
     @Override
-    public String removeTrain(String id) {
-        BaseTrain train = trainRepository.find(id);
-        trainRepository.remove(train);
-        return String.format("Successfully removed train - %s", id);
+    public String removeTrain(String registrationNumber) {
+        BaseVehicle train = vehicleRepository.find(registrationNumber);
+        vehicleRepository.remove(train);
+        return String.format("Successfully removed train - %s", registrationNumber);
     }
 
     @Override
     public String trainsCount() {
-        return String.format("There are %s trains in the database", trainRepository.getCount());
+        List<BaseVehicle> trains = vehicleRepository.findAll(VehicleType.RAIL);
+        return String.format("There are %d trains in the database", trains.size());
     }
 
     @Override
     public void getAllTrains() {
-        if (trainRepository.getTrains().size() != 0){
+        if (vehicleRepository.getVehicles()
+                .stream()
+                .anyMatch(t -> t.getVehicleType().name().equals("RAIL"))) {
+
+
+            List<BaseVehicle> trains = vehicleRepository.findAll(VehicleType.RAIL);
+            trains.sort(Comparator.comparing(BaseVehicle::getRegistrationNumber));
             System.out.println("List all trains: ");
-            for (int i = 0; i < trainRepository.getTrains().size(); i++) {
-                if (i <= trainRepository.getTrains().size() - 2){
-                    System.out.printf("%s, ", trainRepository.getTrains().get(i).getId());
-                } else {
-                    System.out.printf("%s ", trainRepository.getTrains().get(i).getId());
-                }
+            for (int i = 0; i < trains.size(); i++) {
+                    if (i <= trains.size() - 2){
+                        System.out.printf("%s, ", trains.get(i).getRegistrationNumber());
+                    } else {
+                        System.out.printf("%s ", trains.get(i).getRegistrationNumber());
+                    }
             }
             System.out.println();
         } else {
             System.out.println("There are no trains in the database!");
         }
     }
+
 }

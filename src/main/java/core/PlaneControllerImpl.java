@@ -1,53 +1,63 @@
 package core;
 
 import core.interfaces.PlaneController;
-import model.plane.BasePlane;
+import model.BaseVehicle;
+import model.VehicleType;
 import model.plane.CargoPlane;
 import model.plane.PassengerPlane;
-import repositories.PlaneRepositoryImpl;
-import repositories.interfaces.PlaneRepository;
+import repositories.VehicleRepository;
+import repositories.impl.VehicleRepositoryImpl;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class PlaneControllerImpl implements PlaneController {
-    private final PlaneRepository planeRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public PlaneControllerImpl() {
-        this.planeRepository = new PlaneRepositoryImpl();
+    public PlaneControllerImpl(VehicleRepositoryImpl vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
-    public String addPlane(String type, String name) {
-        BasePlane plane;
+    public String addPlane(String type, String registrationNumber, String name) {
+        BaseVehicle plane;
         if (type.equals("PassengerPlane")) {
-            plane = new PassengerPlane(name);
+            plane = new PassengerPlane(registrationNumber, name);
         } else {
-            plane = new CargoPlane(name);
+            plane = new CargoPlane(registrationNumber, name);
         }
-        this.planeRepository.add(plane);
+        this.vehicleRepository.add(plane);
 
         return String.format("Successfully added plane %s - %s", name, type);
     }
 
     @Override
-    public String removePlane(String name) {
-        BasePlane plane = planeRepository.find(name);
-        planeRepository.remove(plane);
-        return String.format("Successfully removed plane - %s", name);
+    public String removePlane(String registrationNumber) {
+        BaseVehicle plane = vehicleRepository.find(registrationNumber);
+        vehicleRepository.remove(plane);
+        return String.format("Successfully removed plane - %s", registrationNumber);
     }
 
     @Override
     public String planesCount() {
-        return String.format("There are %s planes in the database", planeRepository.getCount());
+        List<BaseVehicle> planes = vehicleRepository.findAll(VehicleType.AIR);
+        return String.format("There are %d planes in the database", planes.size());
     }
 
     @Override
     public void getAllPlanes() {
-        if (planeRepository.getPlanes().size() != 0){
+        if (vehicleRepository.getVehicles()
+                .stream()
+                .anyMatch(t -> t.getVehicleType().name().equals("AIR"))) {
+
+            List<BaseVehicle> planes = vehicleRepository.findAll(VehicleType.AIR);
+            planes.sort(Comparator.comparing(BaseVehicle::getRegistrationNumber));
             System.out.println("List all planes: ");
-            for (int i = 0; i < planeRepository.getPlanes().size(); i++) {
-                if (i <= planeRepository.getPlanes().size() - 2){
-                    System.out.printf("%s, ", planeRepository.getPlanes().get(i).getName());
+            for (int i = 0; i < planes.size(); i++) {
+                if (i <= planes.size() - 2){
+                    System.out.printf("%s, ", planes.get(i).getRegistrationNumber());
                 } else {
-                    System.out.printf("%s ", planeRepository.getPlanes().get(i).getName());
+                    System.out.printf("%s ", planes.get(i).getRegistrationNumber());
                 }
             }
             System.out.println();

@@ -1,16 +1,29 @@
-AddCar SportsCar Ferrari
-AddTrain CargoTrain 12312
-AddPlane PassengerPlane Boeing 474
-AddShip MilitaryShip Bismark
-RemoveCar Ferrari
-RemoveCar Ferrari
+AddCar SportsCar 12367 Ferrari
+AddTrain CargoTrain 12345 CargoTrain
+AddPlane PassengerPlane 96734 Boeing474
+AddShip MilitaryShip 01184 Bismark
+RemoveCar 12367
 CarsCount
 ShipsCount
 PlanesCount
 TrainsCount
-AddCar AllRoadCar Jeep
-AddCar SportsCar BMW
+AddCar AllRoadCar 23456 Jeep
+AddCar SportsCar 34786 BMW
 CarsCount
 GetAllCars
-RemoveShip Bismark
+RemoveShip 01184
 GetAllShips
+GetAllTrains
+RemoveTrain 12345
+AddTrain CargoTrain 56789 BDZ
+AddTrain PassengerTrain 47934 PutnicheskiVlak
+GetAllTrains
+AddShip MilitaryShip 03356 Tirpitz
+GetAllShips
+TrainsCount
+TrainsCount
+EnterParking 03356
+Sleep 2000
+LeaveParking 03356
+LeaveParking 03356
+

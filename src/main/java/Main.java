@@ -1,22 +1,22 @@
-import core.CarControllerImpl;
-import core.PlaneControllerImpl;
-import core.ShipControllerImpl;
-import core.TrainControllerImpl;
-import core.interfaces.CarController;
-import core.interfaces.PlaneController;
-import core.interfaces.ShipController;
-import core.interfaces.TrainController;
+import core.*;
+import core.interfaces.*;
+import model.parking.ParkingLot;
+
+import repositories.VehicleRepository;
+import repositories.impl.VehicleRepositoryImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        CarController carController = new CarControllerImpl();
-        PlaneController planeController = new PlaneControllerImpl();
-        ShipController shipController = new ShipControllerImpl();
-        TrainController trainController = new TrainControllerImpl();
+    public static void main(String[] args) throws InterruptedException {
+        VehicleRepositoryImpl vehicleRepository = new VehicleRepositoryImpl();
+        CarController carController = new CarControllerImpl(vehicleRepository);
+        PlaneController planeController = new PlaneControllerImpl(vehicleRepository);
+        ShipController shipController = new ShipControllerImpl(vehicleRepository);
+        TrainController trainController = new TrainControllerImpl(vehicleRepository);
+        ParkingLot parkingLot = new ParkingLot(10, 10, 10, 10);
 
         Scanner reader = null;
         File test = new File("test.txt");
@@ -41,16 +41,16 @@ public class Main {
 
             switch (command) {
                 case "AddCar":
-                    System.out.println(carController.addCar(tokens[1], tokens[2]));
+                    System.out.println(carController.addCar(tokens[1], tokens[2], tokens[3]));
                     break;
                 case "AddPlane":
-                    System.out.println(planeController.addPlane(tokens[1], tokens[2]));
+                    System.out.println(planeController.addPlane(tokens[1], tokens[2], tokens[3]));
                     break;
                 case "AddShip":
-                    System.out.println(shipController.addShip(tokens[1], tokens[2]));
+                    System.out.println(shipController.addShip(tokens[1], tokens[2], tokens[3]));
                     break;
                 case "AddTrain":
-                    System.out.println(trainController.addTrain(tokens[1], tokens[2]));
+                    System.out.println(trainController.addTrain(tokens[1], tokens[2], tokens[3]));
                     break;
                 case "RemoveCar":
                     System.out.println(carController.removeCar(tokens[1]));
@@ -87,6 +87,15 @@ public class Main {
                     break;
                 case "GetAllTrains":
                     trainController.getAllTrains();
+                    break;
+                case "EnterParking":
+                    parkingLot.enterParking(vehicleRepository.find(tokens[1]));
+                    break;
+                case "LeaveParking":
+                    parkingLot.leaveParking(vehicleRepository.find(tokens[1]));
+                    break;
+                case "Sleep":
+                    Thread.sleep(Long.parseLong(tokens[1]));
                     break;
             }
 

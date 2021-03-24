@@ -1,37 +1,18 @@
 package model.car;
 
-public abstract class BaseCar {
+import model.BaseVehicle;
+import model.VehicleType;
+
+public abstract class BaseCar extends BaseVehicle {
     private String manufacturer;
-    private int storageInLitres;
-    private String fuelType;
+    private final int storageInLitres;
+    private final String fuelType;
 
-    public BaseCar(String manufacturer, int storageInLitres, String fuelType) {
+    public BaseCar(String registrationNumber, String manufacturer, int storageInLitres, String fuelType) {
+        super(registrationNumber, VehicleType.ROAD);
         this.manufacturer = manufacturer;
         this.storageInLitres = storageInLitres;
         this.fuelType = fuelType;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public int getStorageInLitres() {
-        return storageInLitres;
-    }
-
-    public void setStorageInLitres(int storageInLitres) {
-        this.storageInLitres = storageInLitres;
-    }
-
-    public String getFuelType() {
-        return fuelType;
-    }
-
-    public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
-    }
 }

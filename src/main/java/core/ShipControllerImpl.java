@@ -1,53 +1,63 @@
 package core;
 
 import core.interfaces.ShipController;
-import model.ship.BaseShip;
+import model.BaseVehicle;
+import model.VehicleType;
 import model.ship.CruiseShip;
 import model.ship.MilitaryShip;
-import repositories.ShipRepositoryImpl;
-import repositories.interfaces.ShipRepository;
+import repositories.VehicleRepository;
+import repositories.impl.VehicleRepositoryImpl;
+
+import java.util.Comparator;
+import java.util.List;
 
 public class ShipControllerImpl implements ShipController {
-    private final ShipRepository shipRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public ShipControllerImpl() {
-        this.shipRepository = new ShipRepositoryImpl();
+    public ShipControllerImpl(VehicleRepositoryImpl vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
-    public String addShip(String type, String name) {
-        BaseShip ship;
+    public String addShip(String type, String registrationNumber, String name) {
+        BaseVehicle ship;
         if (type.equals("CruiseShip")) {
-            ship = new CruiseShip(name);
+            ship = new CruiseShip(registrationNumber, name);
         } else {
-            ship = new MilitaryShip(name);
+            ship = new MilitaryShip(registrationNumber, name);
         }
-        this.shipRepository.add(ship);
+        this.vehicleRepository.add(ship);
 
         return String.format("Successfully added ship %s - %s", name, type);
     }
 
     @Override
-    public String removeShip(String name) {
-        BaseShip ship = shipRepository.find(name);
-        shipRepository.remove(ship);
-        return String.format("Successfully removed ship - %s", name);
+    public String removeShip(String registrationNumber) {
+        BaseVehicle ship = vehicleRepository.find(registrationNumber);
+        vehicleRepository.remove(ship);
+        return String.format("Successfully removed ship - %s", registrationNumber);
     }
 
     @Override
     public String shipsCount() {
-        return String.format("There are %s ships in the database", shipRepository.getCount());
+        List<BaseVehicle> ships = vehicleRepository.findAll(VehicleType.WATER);
+        return String.format("There are %d ships in the database", ships.size());
     }
 
     @Override
     public void getAllShips() {
-        if (shipRepository.getShips().size() != 0){
+        if (vehicleRepository.getVehicles()
+                .stream()
+                .anyMatch(t -> t.getVehicleType().name().equals("WATER"))) {
+
+            List<BaseVehicle> ships = vehicleRepository.findAll(VehicleType.WATER);
+            ships.sort(Comparator.comparing(BaseVehicle::getRegistrationNumber));
             System.out.println("List all ships: ");
-            for (int i = 0; i < shipRepository.getShips().size(); i++) {
-                if (i <= shipRepository.getShips().size() - 2){
-                    System.out.printf("%s, ", shipRepository.getShips().get(i).getName());
+            for (int i = 0; i < ships.size(); i++) {
+                if (i <= ships.size() - 2){
+                    System.out.printf("%s, ", ships.get(i).getRegistrationNumber());
                 } else {
-                    System.out.printf("%s ", shipRepository.getShips().get(i).getName());
+                    System.out.printf("%s ", ships.get(i).getRegistrationNumber());
                 }
             }
             System.out.println();
