@@ -3,6 +3,7 @@ package core;
 import core.interfaces.ShipController;
 import model.BaseVehicle;
 import model.VehicleType;
+import model.ship.BaseShip;
 import model.ship.CruiseShip;
 import model.ship.MilitaryShip;
 import repositories.VehicleRepository;
@@ -20,13 +21,14 @@ public class ShipControllerImpl implements ShipController {
 
     @Override
     public String addShip(String type, String registrationNumber, String name) {
-        BaseVehicle ship;
+        BaseShip ship;
         if (type.equals("CruiseShip")) {
             ship = new CruiseShip(registrationNumber, name);
         } else {
             ship = new MilitaryShip(registrationNumber, name);
         }
         this.vehicleRepository.add(ship);
+        this.vehicleRepository.saveShip(ship);
 
         return String.format("Successfully added ship %s - %s", name, type);
     }
@@ -35,6 +37,7 @@ public class ShipControllerImpl implements ShipController {
     public String removeShip(String registrationNumber) {
         BaseVehicle ship = vehicleRepository.find(registrationNumber);
         vehicleRepository.remove(ship);
+        vehicleRepository.deleteShip(ship);
         return String.format("Successfully removed ship - %s", registrationNumber);
     }
 

@@ -23,4 +23,11 @@ public abstract class BaseShip extends BaseVehicle {
         this.name = name;
     }
 
+    public int getStorageInLitres() {
+        return storageInLitres;
+    }
+
+    public int getCrewMembers() {
+        return crewMembers;
+    }
 }

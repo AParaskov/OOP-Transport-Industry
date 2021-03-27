@@ -23,5 +23,11 @@ public abstract class BasePlane extends BaseVehicle {
         this.name = name;
     }
 
+    public int getSeats() {
+        return seats;
+    }
 
+    public int getStorageInLitres() {
+        return storageInLitres;
+    }
 }

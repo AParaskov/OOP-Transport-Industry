@@ -4,22 +4,30 @@ import model.BaseVehicle;
 import model.VehicleType;
 
 public abstract class BaseTrain extends BaseVehicle {
-    private String id;
+    private String name;
     private final int seats;
     private final int storageInLitres;
 
-    public BaseTrain(String registrationNumber, String id, int seats, int storageInLitres) {
+    public BaseTrain(String registrationNumber, String name, int seats, int storageInLitres) {
         super(registrationNumber, VehicleType.RAIL);
-        this.id = id;
+        this.name = name;
         this.seats = seats;
         this.storageInLitres = storageInLitres;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public int getStorageInLitres() {
+        return storageInLitres;
     }
 }

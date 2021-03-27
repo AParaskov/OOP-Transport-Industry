@@ -4,6 +4,7 @@ import core.interfaces.CarController;
 import model.BaseVehicle;
 import model.VehicleType;
 import model.car.AllRoadCar;
+import model.car.BaseCar;
 import model.car.SportsCar;
 
 import repositories.VehicleRepository;
@@ -21,13 +22,14 @@ public class CarControllerImpl implements CarController {
 
     @Override
     public String addCar(String type, String registrationNumber, String manufacturer) {
-        BaseVehicle car;
+        BaseCar car;
         if (type.equals("SportsCar")) {
             car = new SportsCar(registrationNumber, manufacturer);
         } else {
             car = new AllRoadCar(registrationNumber, manufacturer);
         }
         this.vehicleRepository.add(car);
+        this.vehicleRepository.saveCar(car);
 
         return String.format("Successfully added car %s - %s", manufacturer, type);
     }
@@ -36,6 +38,7 @@ public class CarControllerImpl implements CarController {
     public String removeCar(String registrationNumber) {
         BaseVehicle car = vehicleRepository.find(registrationNumber);
         vehicleRepository.remove(car);
+        vehicleRepository.deleteCar(car);
         return String.format("Successfully removed car - %s", registrationNumber);
     }
 

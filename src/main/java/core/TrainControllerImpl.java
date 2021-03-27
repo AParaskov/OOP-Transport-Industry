@@ -4,6 +4,7 @@ import core.interfaces.TrainController;
 import model.BaseVehicle;
 
 import model.VehicleType;
+import model.train.BaseTrain;
 import model.train.CargoTrain;
 import model.train.PassengerTrain;
 
@@ -22,13 +23,14 @@ public class TrainControllerImpl implements TrainController {
 
     @Override
     public String addTrain(String type, String registrationNumber, String id) {
-        BaseVehicle train;
+        BaseTrain train;
         if (type.equals("PassengerTrain")) {
             train = new PassengerTrain(registrationNumber, id);
         } else {
             train = new CargoTrain(registrationNumber, id);
         }
         this.vehicleRepository.add(train);
+        this.vehicleRepository.saveTrain(train);
 
         return String.format("Successfully added train %s - %s", id, type);
     }
@@ -37,6 +39,7 @@ public class TrainControllerImpl implements TrainController {
     public String removeTrain(String registrationNumber) {
         BaseVehicle train = vehicleRepository.find(registrationNumber);
         vehicleRepository.remove(train);
+        vehicleRepository.deleteTrain(train);
         return String.format("Successfully removed train - %s", registrationNumber);
     }
 

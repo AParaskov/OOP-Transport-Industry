@@ -15,4 +15,19 @@ public abstract class BaseCar extends BaseVehicle {
         this.fuelType = fuelType;
     }
 
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public int getStorageInLitres() {
+        return storageInLitres;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
 }

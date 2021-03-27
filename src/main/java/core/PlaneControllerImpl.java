@@ -3,6 +3,7 @@ package core;
 import core.interfaces.PlaneController;
 import model.BaseVehicle;
 import model.VehicleType;
+import model.plane.BasePlane;
 import model.plane.CargoPlane;
 import model.plane.PassengerPlane;
 import repositories.VehicleRepository;
@@ -20,13 +21,14 @@ public class PlaneControllerImpl implements PlaneController {
 
     @Override
     public String addPlane(String type, String registrationNumber, String name) {
-        BaseVehicle plane;
+        BasePlane plane;
         if (type.equals("PassengerPlane")) {
             plane = new PassengerPlane(registrationNumber, name);
         } else {
             plane = new CargoPlane(registrationNumber, name);
         }
         this.vehicleRepository.add(plane);
+        this.vehicleRepository.savePlane(plane);
 
         return String.format("Successfully added plane %s - %s", name, type);
     }
@@ -35,6 +37,7 @@ public class PlaneControllerImpl implements PlaneController {
     public String removePlane(String registrationNumber) {
         BaseVehicle plane = vehicleRepository.find(registrationNumber);
         vehicleRepository.remove(plane);
+        vehicleRepository.deletePlane(plane);
         return String.format("Successfully removed plane - %s", registrationNumber);
     }
 
